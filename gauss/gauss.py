@@ -72,3 +72,14 @@ def compute_composite_integral(
         total += sum(wk * Decimal(f(left + xk)) for wk, xk in zip(w, x, strict=True))
         left += subdiv_scale
     return total
+
+
+def compute_pi(n: list[int], PRECISION: int):
+    for node_count in n:
+        pi_approx = (
+            compute_composite_integral(
+                lambda x: (1 - Decimal(x) ** 2).sqrt(), 20, node_count, PRECISION
+            )
+            * 2
+        )
+        print(pi_approx)
