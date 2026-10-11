@@ -1,0 +1,27 @@
+Part 1
+The .ipynb notebook was added in one of the two squashed commits and deleted in the
+other. When the commits are combined, the addition and the deletion cancel out,
+so the squashed commit has no change to the file.
+
+Part 2
+I prefer Iris's fix. Her change makes legendre_polynomial return exact Fraction coefficients,
+and her test compares them with exact equality. Frank's fix instead converts those same fractions
+down to Decimal and compares within a tolerance — but once the underlying values are exact,
+checking them approximately throws that exactness away: a small bug could fall inside the
+tolerance and pass silently, where the exact comparison would catch it.
+Frank's orthogonolity test checks the orthogonal property of the legendre_polynomials.
+However, This test is independent of the choice of the coefficients tests.
+
+Part 3
+It is better to have multiple independent and separate files, and I agree with Frank's remarks.
+Editing, reviewing, and merging multiple independent LATEX files is efficient and correct.
+If two people edit few parts of the same file, this might lead to merge conflicts in the future.
+
+Part 4
+Test fail (TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'Fraction')
+because few parts of the code need to be modified (polyeval in legroot.py:20),
+to accommodate the fraction coefficients introduced by Iris;
+however, the rest of the code is built on decimal coefficients.
+Frank's test never ran polyeval against Fraction, and Iris never ran her Fraction-producing code
+throught Frank's Decimal-only polyeval.
+The two pieces of code never shared a line, thus no merge conflicts; but the overall test code fails.
